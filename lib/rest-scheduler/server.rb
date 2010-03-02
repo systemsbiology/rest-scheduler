@@ -1,6 +1,4 @@
-#require 'rubygems'
 require 'sinatra/base'
-#require 'xmlsimple'
 
 require File.dirname(__FILE__) + '/task'
 

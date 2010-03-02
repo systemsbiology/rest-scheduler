@@ -9,3 +9,6 @@ rescue LoadError
 end
 
 Bundler.require
+
+require 'rufus/scheduler'
+require 'xmlsimple'

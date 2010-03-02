@@ -29,7 +29,7 @@ module RestScheduler
       puts "Trying to send scheduler method: #{schedule_method}, time: #{schedule_every}," +
            " command: #{shell_command}"
       begin
-        job = RestScheduler::Scheduler.scheduler.send(schedule_method.to_sym, schedule_every) do
+        job = Scheduler.scheduler.send(schedule_method.to_sym, schedule_every) do
           `#{shell_command}`
         end
 
@@ -45,7 +45,7 @@ module RestScheduler
 
     def stop
       puts "Trying to unschedule #{job_id}"
-      RestScheduler::Scheduler.scheduler.unschedule(job_id)
+      Scheduler.scheduler.unschedule(job_id)
     end
 
     def self.start_all
