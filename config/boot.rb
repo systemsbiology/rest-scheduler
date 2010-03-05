@@ -12,3 +12,4 @@ Bundler.require
 
 require 'rufus/scheduler'
 require 'xmlsimple'
+require 'active_record'

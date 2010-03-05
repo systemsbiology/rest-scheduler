@@ -8,9 +8,5 @@ namespace :db do
 end
 
 task(:environment) do
-  require 'rubygems'
-  require 'active_record'
-
-  dbconfig = YAML.load(File.read('config/database.yml'))
-  ActiveRecord::Base.establish_connection dbconfig
+  require File.dirname(__FILE__) + '/../config/environment'
 end

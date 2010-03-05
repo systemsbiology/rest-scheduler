@@ -1,11 +1,3 @@
-require 'active_record'
-
-dbconfig = YAML.load_file( File.join(APP_ROOT, "config", "database.yml") )
-ActiveRecord::Base.establish_connection(
-  :adapter => dbconfig['adapter'],
-  :database => File.join( APP_ROOT, dbconfig['database'] )
-)
-
 module RestScheduler
   class Task < ActiveRecord::Base
     validates_presence_of :name, :schedule_method, :schedule_every, :shell_command

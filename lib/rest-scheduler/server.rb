@@ -8,6 +8,13 @@ module RestScheduler
   class Server < Sinatra::Base
     set :root, File.dirname(__FILE__)
 
+    # configure db here to take advantage of knowing environment
+    dbconfig = YAML.load_file( File.join(APP_ROOT, "config", "database.yml") )[environment.to_s]
+    ActiveRecord::Base.establish_connection(
+      :adapter => dbconfig['adapter'],
+      :database => File.join( APP_ROOT, dbconfig['database'] )
+    )
+
     get '/tasks' do
       @tasks = Task.all
       content_type 'application/xml', :charset => 'utf-8'  
