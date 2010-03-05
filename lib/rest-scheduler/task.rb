@@ -19,7 +19,7 @@ module RestScheduler
 
     def start
       puts "Trying to send scheduler method: #{schedule_method}, time: #{schedule_every}," +
-           " command: #{shell_command}"
+           " command: #{shell_command}" if $DEBUG
       begin
         job = Scheduler.scheduler.send(schedule_method.to_sym, schedule_every) do
           `#{shell_command}`
@@ -36,7 +36,7 @@ module RestScheduler
     end
 
     def stop
-      puts "Trying to unschedule #{job_id}"
+      puts "Trying to unschedule #{job_id}" if $DEBUG
       Scheduler.scheduler.unschedule(job_id)
     end
 
@@ -49,7 +49,6 @@ module RestScheduler
     def self.stop_all
       all.each do |task|
         task.stop
-        task.update_attributes(:job_id => nil)
       end
     end
   end
