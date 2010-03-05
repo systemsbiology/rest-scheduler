@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-describe "the server" do
+describe RestScheduler::Server do
   def mock_task
     @mock_task ||= mock(
       "Task",
@@ -67,7 +67,7 @@ describe "the server" do
     it "should give a 422 status if the XML can't be parsed" do
       post '/tasks', '<task>asdfsadf'
       last_response.status.should == 422
-      last_response.body.should match /Error parsing XML/
+      last_response.body.should match(/Error parsing XML/)
     end
   end
 

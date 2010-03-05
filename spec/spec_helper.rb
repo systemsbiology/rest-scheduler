@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../config/environment'
 
 require 'spec'
-#require 'spec/autorun'
+require 'spec/autorun'
 require 'spec/interop/test'
 require 'rack/test'
 
