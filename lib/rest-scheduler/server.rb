@@ -2,14 +2,13 @@ require 'sinatra/base'
 
 require File.dirname(__FILE__) + '/task'
 
-APP_URL = "http://orkney:4567"
-
 module RestScheduler
   class Server < Sinatra::Base
+    helpers Sinatra::UrlForHelper
+
     set :root, File.dirname(__FILE__)
 
-    # configure db here to take advantage of knowing environment
-    dbconfig = YAML.load_file( File.join(APP_ROOT, "config", "database.yml") )[environment.to_s]
+    dbconfig = YAML.load_file( File.join(APP_ROOT, "config", "database.yml") )
     ActiveRecord::Base.establish_connection(
       :adapter => dbconfig['adapter'],
       :database => File.join( APP_ROOT, dbconfig['database'] )
@@ -46,8 +45,10 @@ module RestScheduler
 
         if @task.save
           status 201
-          headers("Location" => "#{APP_URL}/tasks/#{@task.id}",
-            "Content-Location" => "#{APP_URL}/tasks/#{@task.id}")
+          headers(
+            "Location" => url_for("/tasks/#{@task.id}", :full),
+            "Content-Location" => url_for("/tasks/#{@task.id}", :full)
+          )
           builder :show
         else
           status 422

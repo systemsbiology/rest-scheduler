@@ -49,8 +49,8 @@ describe RestScheduler::Server do
         post '/tasks', '<task><name>Do Stuff</name><schedule_method>every</schedule_method>' +
           '<schedule_every>5s</schedule_every><shell_command>touch some_file.txt</shell_command></task>'
         last_response.status.should == 201
-        last_response.headers["Location"].should == "#{APP_URL}/tasks/23"
-        last_response.headers["Content-Location"].should == "#{APP_URL}/tasks/23"
+        last_response.headers["Location"].should match("/tasks/23")
+        last_response.headers["Content-Location"].should match("/tasks/23") 
       end
 
       it "should give a 422 status and error message if the task is not valid" do

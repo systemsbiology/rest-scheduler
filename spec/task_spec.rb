@@ -57,38 +57,33 @@ describe RestScheduler::Task do
         :name => "Do stuff",
         :schedule_method => "every",
         :schedule_every => "5s",
-        :shell_command => "touch some_file.txt"
+        :shell_command => "touch some_file.txt",
+        :postback_uri => "http://localhost:5678"
       )
     end
 
     it "should schedule the task and return it if no there are no errors" do
-      scheduler = mock("Scheduler")
-      RestScheduler::Scheduler.should_receive(:scheduler).and_return(scheduler)
       job = mock("Job")
-      scheduler.should_receive(:send).with(
-        @task.schedule_method.to_sym, @task.schedule_every
+      RestScheduler::Scheduler.should_receive(:add).with(
+        @task.schedule_method.to_sym, @task.schedule_every, @task.shell_command, @task.postback_uri
       ).and_return(job)
       job.should_receive(:job_id).and_return(23)
       @task.start
     end
 
     it "should return false if there is an argument error" do
-      scheduler = mock("Scheduler")
-      RestScheduler::Scheduler.should_receive(:scheduler).and_return(scheduler)
       job = mock("Job")
-      scheduler.should_receive(:send).with(
-        @task.schedule_method.to_sym, @task.schedule_every
+      RestScheduler::Scheduler.should_receive(:add).with(
+        @task.schedule_method.to_sym, @task.schedule_every, @task.shell_command, @task.postback_uri
       ).and_raise(ArgumentError)
       @task.start.should be_false
       @task.errors.size.should == 1
     end
 
     it "should return false if there is a runtime error" do
-      scheduler = mock("Scheduler")
-      RestScheduler::Scheduler.should_receive(:scheduler).and_return(scheduler)
       job = mock("Job")
-      scheduler.should_receive(:send).with(
-        @task.schedule_method.to_sym, @task.schedule_every
+      RestScheduler::Scheduler.should_receive(:add).with(
+        @task.schedule_method.to_sym, @task.schedule_every, @task.shell_command, @task.postback_uri
       ).and_raise(RuntimeError)
       @task.start.should be_false
       @task.errors.size.should == 1
