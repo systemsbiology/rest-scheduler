@@ -6,6 +6,7 @@ class CreateTasks < ActiveRecord::Migration
       t.column :schedule_every, :string
       t.column :shell_command, :string
       t.column :job_id, :string
+      t.column :postback_uri, :string
     end
   end
 
