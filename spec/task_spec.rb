@@ -65,7 +65,8 @@ describe RestScheduler::Task do
     it "should schedule the task and return it if no there are no errors" do
       job = mock("Job")
       RestScheduler::Scheduler.should_receive(:add).with(
-        @task.schedule_method.to_sym, @task.schedule_every, @task.shell_command, @task.postback_uri
+        @task.name, @task.schedule_method.to_sym, @task.schedule_every,
+        @task.shell_command, @task.postback_uri
       ).and_return(job)
       job.should_receive(:job_id).and_return(23)
       @task.start
@@ -74,7 +75,8 @@ describe RestScheduler::Task do
     it "should return false if there is an argument error" do
       job = mock("Job")
       RestScheduler::Scheduler.should_receive(:add).with(
-        @task.schedule_method.to_sym, @task.schedule_every, @task.shell_command, @task.postback_uri
+        @task.name, @task.schedule_method.to_sym, @task.schedule_every,
+        @task.shell_command, @task.postback_uri
       ).and_raise(ArgumentError)
       @task.start.should be_false
       @task.errors.size.should == 1
@@ -83,7 +85,8 @@ describe RestScheduler::Task do
     it "should return false if there is a runtime error" do
       job = mock("Job")
       RestScheduler::Scheduler.should_receive(:add).with(
-        @task.schedule_method.to_sym, @task.schedule_every, @task.shell_command, @task.postback_uri
+        @task.name, @task.schedule_method.to_sym, @task.schedule_every,
+        @task.shell_command, @task.postback_uri
       ).and_raise(RuntimeError)
       @task.start.should be_false
       @task.errors.size.should == 1

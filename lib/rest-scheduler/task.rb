@@ -21,7 +21,7 @@ module RestScheduler
       puts "Trying to send scheduler method: #{schedule_method}, time: #{schedule_every}," +
            " command: #{shell_command}" if $DEBUG
       begin
-        job = Scheduler.add(schedule_method.to_sym, schedule_every, shell_command, postback_uri)
+        job = Scheduler.add(name, schedule_method.to_sym, schedule_every, shell_command, postback_uri)
 
         self.job_id = job.job_id
       rescue ArgumentError => e

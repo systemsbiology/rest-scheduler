@@ -1,5 +1,3 @@
-require 'sinatra/base'
-
 require File.dirname(__FILE__) + '/task'
 
 module RestScheduler
@@ -7,6 +5,13 @@ module RestScheduler
     helpers Sinatra::UrlForHelper
 
     set :root, File.dirname(__FILE__)
+
+    configure [:development, :production] do
+      appconfig = YAML.load_file( File.join(APP_ROOT, "config", "application.yml") )
+      use Rack::Auth::Basic do |username, password|
+        [username, password] == [appconfig['username'], appconfig['password']]
+      end
+    end
 
     dbconfig = YAML.load_file( File.join(APP_ROOT, "config", "database.yml") )
     ActiveRecord::Base.establish_connection(
@@ -40,7 +45,8 @@ module RestScheduler
           :name => task_hash["name"] && task_hash["name"].first,
           :schedule_method => task_hash["schedule_method"] && task_hash["schedule_method"].first,
           :schedule_every => task_hash["schedule_every"] && task_hash["schedule_every"].first,
-          :shell_command => task_hash["shell_command"] &&task_hash["shell_command"].first
+          :shell_command => task_hash["shell_command"] && task_hash["shell_command"].first,
+          :postback_uri => task_hash["postback_uri"] && task_hash["postback_uri"].first
         )
 
         if @task.save

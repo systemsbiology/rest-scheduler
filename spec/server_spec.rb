@@ -40,7 +40,8 @@ describe RestScheduler::Server do
           :name => "Do Stuff",
           :schedule_method => "every",
           :schedule_every => "5s",
-          :shell_command => "touch some_file.txt"
+          :shell_command => "touch some_file.txt",
+          :postback_uri => nil
         ).and_return(mock_task)
       end
 

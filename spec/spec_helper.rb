@@ -9,7 +9,7 @@ def app
   RestScheduler::Server
 end
 
-set :environment, :test
+app.set :environment, :test
 
 Spec::Runner.configure do |config|
   config.include Rack::Test::Methods
